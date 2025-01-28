@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album Kỷ Niệm Đáng Yêu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Thêm overlay thông báo khởi đầu -->
+    <div id="startOverlay" class="start-overlay">
+        <div class="ribbon-container">
+            <div class="ribbon-circle"></div>
+            <div class="ribbon-part top"></div>
+            <div class="ribbon-part left"></div>
+            <div class="ribbon-part right"></div>
+        </div>
+        <div class="start-text">Chạm để mở quà</div>
+    </div>
+
+    <!-- Thêm audio element -->
+    <audio id="bgMusic" loop>
+        <source src="storage/music.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="slides-container">
+        <!-- Slide 1: Lời chúc người yêu -->
+        <div class="slide" id="slide1">
+            <h1>💝 Gửi Người Yêu Của Anh 💝</h1>
+            <div class="mystery-container">
+                <div class="mystery-box" data-message="love1">
+                    <div class="box-body">
+                        <div class="box-face front"></div>
+                        <div class="box-face back"></div>
+                        <div class="box-face left"></div>
+                        <div class="box-face right"></div>
+                        <div class="box-face top"></div>
+                        <div class="box-face bottom"></div>
+                    </div>
+                    <div class="ribbon"></div>
+                </div>
+                <div class="mystery-box" data-message="love2">
+                    <div class="paper">Xé em đi!</div>
+                    <div class="message"></div>
+                </div>
+                <div class="mystery-box" data-message="love3">
+                    <div class="paper">Xé em đi!</div>
+                    <div class="message"></div>
+                </div>
+                <div class="mystery-box" data-message="love4">
+                    <div class="paper">Xé em đi!</div>
+                    <div class="message"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Lời chúc năm mới -->
+        <div class="slide" id="slide2">
+            <h1>🎊 Chúc Mừng Năm Mới 2025 🎊</h1>
+            <div class="envelopes-container">
+                <div class="envelope" data-message="newyear1">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-content">Lời chúc 1</div>
+                </div>
+                <div class="envelope" data-message="newyear2">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-content">Lời chúc 2</div>
+                </div>
+                <div class="envelope" data-message="newyear3">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-content">Lời chúc 3</div>
+                </div>
+                <div class="envelope" data-message="newyear4">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-content">Lời chúc 4</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Album ảnh -->
+        <div class="slide" id="slide3">
+            <div class="container">
+                <h1>💖 Album Kỷ Niệm Của Chúng Ta 💖</h1>
+                <div class="gallery">
+                    <div class="item">
+                        <img src="storage/n1.jpg" alt="Kỷ niệm 1" class="gallery-img">
+                    </div>
+                    <div class="item">
+                        <img src="storage/n2.jpg" alt="Kỷ niệm 2" class="gallery-img">
+                    </div>
+                    <div class="item">
+                        <img src="storage/n3.jpg" alt="Kỷ niệm 3" class="gallery-img">
+                    </div>
+                    <div class="item">
+                        <img src="storage/n4.jpg" alt="Kỷ niệm 4" class="gallery-img">
+                    </div>
+                    <div class="item video-item">
+                        <video controls>
+                            <source src="storage/mv.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal cho lời chúc -->
+    <div class="modal" id="wishModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-text"></div>
+        </div>
+    </div>
+
+    <!-- Nút điều hướng -->
+    <div class="navigation">
+        <button class="nav-btn prev">❮</button>
+        <div class="nav-dots"></div>
+        <button class="nav-btn next">❯</button>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
