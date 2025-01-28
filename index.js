@@ -37,15 +37,10 @@ document.addEventListener('DOMContentLoaded', function() {
     slides[0].classList.add('active');
 
     function goToSlide(index) {
-        // Xác định hướng chuyển slide
-        const direction = index > currentSlide ? 'right' : 'left';
-        
-        // Remove active class and add exit animation
-        slides[currentSlide].style.animation = `slideOut${direction.charAt(0).toUpperCase() + direction.slice(1)} 0.8s forwards`;
+        // Remove active class from current slide
         slides[currentSlide].classList.remove('active');
         
-        // Add enter animation and active class to new slide
-        slides[index].style.animation = `slideIn${direction.charAt(0).toUpperCase() + direction.slice(1)} 0.8s forwards`;
+        // Add active class to new slide
         slides[index].classList.add('active');
         
         // Update current slide index
@@ -55,10 +50,15 @@ document.addEventListener('DOMContentLoaded', function() {
         updateDots();
 
         // Nếu chuyển đến slide 5, khởi tạo animation chat
-        if (index === 4) { // index 4 tương ứng với slide thứ 5
+        if (index === 4) {
             setTimeout(() => {
                 initializeChatAnimations();
-            }, 500); // Đợi 500ms sau khi slide chuyển xong
+            }, 500);
+        }
+        
+        // Nếu chuyển đến slide 6, khởi tạo floating elements
+        if (index === 5) {
+            createFloatingElements();
         }
     }
 
@@ -831,5 +831,67 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         showNextMessage();
+    }
+
+    function createFloatingElements() {
+        const hearts = document.querySelector('.floating-hearts');
+        const bubbles = document.querySelector('.floating-bubbles');
+        
+        // Tạo trái tim nổi
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.position = 'absolute';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.bottom = '-20px';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.opacity = Math.random() * 0.5 + 0.5;
+            heart.style.animation = `heartFloat ${Math.random() * 5 + 3}s linear forwards`;
+            hearts.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 8000);
+        }, 500);
+        
+        // Tạo bong bóng
+        setInterval(() => {
+            const bubble = document.createElement('div');
+            bubble.style.position = 'absolute';
+            bubble.style.left = Math.random() * 100 + 'vw';
+            bubble.style.bottom = '-20px';
+            bubble.style.width = (Math.random() * 30 + 10) + 'px';
+            bubble.style.height = bubble.style.width;
+            bubble.style.background = 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.2))';
+            bubble.style.borderRadius = '50%';
+            bubble.style.animation = `bubbleFloat ${Math.random() * 8 + 4}s linear forwards`;
+            bubbles.appendChild(bubble);
+            
+            setTimeout(() => bubble.remove(), 12000);
+        }, 1000);
+    }
+
+    // Thêm hiệu ứng click cho messages
+    document.querySelectorAll('.love-message').forEach(message => {
+        message.addEventListener('click', function() {
+            // Tạo hiệu ứng sparkle khi click
+            const sparkles = 10;
+            for(let i = 0; i < sparkles; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'message-sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                this.appendChild(sparkle);
+                
+                setTimeout(() => sparkle.remove(), 1000);
+            }
+            
+            // Tạo hiệu ứng rung nhẹ
+            this.style.animation = 'shake 0.5s ease-in-out';
+            setTimeout(() => this.style.animation = '', 500);
+        });
+    });
+
+    // Gọi hàm tạo hiệu ứng khi slide 6 được hiển thị
+    if(currentSlide === 5) { // index 5 tương ứng với slide 6
+        createFloatingElements();
     }
 });

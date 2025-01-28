@@ -157,24 +157,22 @@ h1 {
 .slide {
     height: 100vh;
     width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    display: none; /* Thay đổi từ visibility: hidden thành display: none */
     position: absolute;
     top: 0;
     left: 0;
     opacity: 0;
-    visibility: hidden;
-    transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
-    transform: scale(0.9);
+    transition: opacity 0.8s ease;
 }
 
 /* Active slide */
 .slide.active {
+    display: flex; /* Hiển thị slide active */
     opacity: 1;
-    visibility: visible;
-    transform: scale(1);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
 }
 
 /* Non-active slides */
@@ -1491,7 +1489,7 @@ h1 {
 }
 
 /* Đảm bảo tiêu đề luôn hiển thị trên cùng */
-#slide4 h1 {
+#slide6 h1 {
     position: relative;
     z-index: 20;
     margin-bottom: 100px;
@@ -2205,6 +2203,172 @@ h1 {
     to {
         opacity: 1;
         transform: scale(1.2);
+    }
+}
+
+/* Styling cho slide 6 - Phiên bản mới */
+#slide6 {
+    background: linear-gradient(135deg, #fff0f6 0%, #ffe4ef 100%);
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.love-title {
+    font-size: 2.5em;
+    margin-bottom: 50px;
+    background: linear-gradient(45deg, #ff4081, #ff7aa2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    animation: titleFloat 3s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
+}
+
+.love-messages-container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    gap: 60px; /* Tăng khoảng cách giữa các hàng */
+    position: relative;
+    z-index: 1;
+}
+
+.love-message-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 20px 0;
+}
+
+.love-message {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px 25px;
+    border-radius: 30px;
+    box-shadow: 0 10px 20px rgba(255, 64, 129, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    min-width: 200px; /* Đảm bảo độ rộng tối thiểu */
+    max-width: 280px; /* Giới hạn độ rộng tối đa */
+}
+
+.love-message:hover {
+    transform: translateY(-15px) scale(1.05);
+    background: linear-gradient(135deg, #ff4081, #ff7aa2);
+    box-shadow: 0 15px 30px rgba(255, 64, 129, 0.25);
+}
+
+.message-icon {
+    font-size: 1.8em;
+    transition: transform 0.4s ease;
+}
+
+.message-text {
+    font-size: 1em;
+    color: #ff4081;
+    font-family: 'Comic Neue', cursive;
+    transition: color 0.3s ease;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.love-message:hover .message-text {
+    color: white;
+}
+
+.love-message:hover .message-icon {
+    transform: scale(1.2) rotate(15deg);
+}
+
+/* Animation cho các hàng */
+.love-message-row {
+    animation: rowFloat 3s ease-in-out infinite;
+}
+
+.love-message-row:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.love-message-row:nth-child(3) {
+    animation-delay: 1s;
+}
+
+@keyframes rowFloat {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(20px);
+    }
+}
+
+/* Hiệu ứng sparkle khi hover */
+.love-message::after {
+    content: '✨';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 1.5em;
+    opacity: 0;
+    transition: all 0.4s ease;
+    transform: rotate(-45deg);
+}
+
+.love-message:hover::after {
+    opacity: 1;
+    top: -10px;
+    right: -10px;
+    transform: rotate(0deg);
+}
+
+/* Hiệu ứng glow */
+.love-message::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.8), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.love-message:hover::before {
+    opacity: 0.4;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .love-messages-container {
+        gap: 30px;
+    }
+    
+    .love-message-row {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+    
+    .love-message {
+        min-width: 150px;
+        padding: 12px 20px;
+    }
+    
+    .message-text {
+        font-size: 0.9em;
     }
 }
 
