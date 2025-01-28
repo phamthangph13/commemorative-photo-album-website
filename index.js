@@ -53,6 +53,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Update dots
         updateDots();
+
+        // Nếu chuyển đến slide 5, khởi tạo animation chat
+        if (index === 4) { // index 4 tương ứng với slide thứ 5
+            setTimeout(() => {
+                initializeChatAnimations();
+            }, 500); // Đợi 500ms sau khi slide chuyển xong
+        }
     }
 
     // Navigation dots
@@ -666,5 +673,163 @@ document.addEventListener('DOMContentLoaded', function() {
     // Hàm format tiền
     function formatMoney(amount) {
         return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    // Xử lý animation cho tin nhắn trong slide 5
+    function initializeChatAnimations() {
+        const messages = document.querySelectorAll('.message-left, .message-right');
+        const chatContainer = document.querySelector('.chat-container');
+        let currentMessageIndex = 0;
+
+        // Thêm các sticker và emoji vào tin nhắn
+        const stickers = [
+            '❤️', '😘', '🥰', '💝', '💖', '💕', '💓', '💗', '💞',
+            '🌸', '✨', '🎀', '🎵', '🌟', '⭐', '🍀', '🌺', '🌼'
+        ];
+
+        // Function tạo mưa tim
+        function createHeartRain(duration = 6000) {
+            const createHeart = () => {
+                const heart = document.createElement('div');
+                heart.className = 'heart-rain';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                heart.style.opacity = Math.random() * 0.7 + 0.3;
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                document.body.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 5000);
+            };
+
+            // Tạo mưa tim liên tục trong khoảng thời gian duration
+            const interval = setInterval(() => {
+                // Tạo nhiều tim cùng lúc để tạo hiệu ứng dày đặc hơn
+                for (let i = 0; i < 3; i++) {
+                    createHeart();
+                }
+            }, 200); // Cứ mỗi 200ms tạo một đợt tim
+
+            // Dừng mưa tim sau duration
+            setTimeout(() => {
+                clearInterval(interval);
+            }, duration);
+        }
+
+        // Function thêm sparkles
+        function addSparkles(element) {
+            for (let i = 0; i < 5; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                element.appendChild(sparkle);
+                
+                setTimeout(() => sparkle.remove(), 1000);
+            }
+        }
+
+        // Function scroll đến tin nhắn
+        function scrollToMessage(element) {
+            const scrollPosition = element.offsetTop - chatContainer.clientHeight + 100;
+            chatContainer.scrollTo({
+                top: scrollPosition,
+                behavior: 'smooth'
+            });
+        }
+
+        // Reset all messages
+        messages.forEach(message => {
+            message.style.opacity = '0';
+            message.style.transform = 'translateY(20px)';
+        });
+
+        function showNextMessage() {
+            if (currentMessageIndex < messages.length) {
+                const message = messages[currentMessageIndex];
+                const delay = parseInt(message.dataset.delay) || 2000;
+                const isTyping = message.classList.contains('typing');
+                const nextMessage = messages[currentMessageIndex + 1];
+                const hasSticker = message.dataset.sticker === 'true';
+                const hasSpecialEffect = message.dataset.special === 'true';
+
+                if (isTyping) {
+                    setTimeout(() => {
+                        message.style.opacity = '1';
+                        message.style.transform = 'translateY(0)';
+                        
+                        scrollToMessage(message);
+
+                        setTimeout(() => {
+                            message.style.opacity = '0';
+                            currentMessageIndex++;
+                            showNextMessage();
+                        }, 2000);
+                    }, delay);
+                } else {
+                    // Add typing indicator
+                    if (nextMessage && !isTyping && !message.classList.contains('date-marker')) {
+                        const typingIndicator = document.createElement('div');
+                        typingIndicator.className = 'message-left typing-temp';
+                        typingIndicator.innerHTML = `
+                            <div class="avatar">Em</div>
+                            <div class="message-content">
+                                <div class="typing-indicator">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        `;
+                        message.parentNode.insertBefore(typingIndicator, nextMessage);
+                        
+                        // Scroll to typing indicator
+                        scrollToMessage(typingIndicator);
+
+                        setTimeout(() => {
+                            typingIndicator.remove();
+                        }, delay - 500);
+                    }
+
+                    setTimeout(() => {
+                        message.style.opacity = '1';
+                        message.style.transform = 'translateY(0)';
+
+                        // Kiểm tra nếu tin nhắn có chứa icon heart
+                        const messageText = message.querySelector('.message-content p').textContent;
+                        if (messageText.includes('❤️') || messageText.includes('💝') || 
+                            messageText.includes('💖') || messageText.includes('💗') || 
+                            messageText.includes('💓') || messageText.includes('💞')) {
+                            createHeartRain(6000);
+                        }
+
+                        // Add sticker or special effects
+                        if (hasSticker) {
+                            const sticker = stickers[Math.floor(Math.random() * stickers.length)];
+                            const stickerElement = document.createElement('div');
+                            stickerElement.className = 'sticker-message';
+                            stickerElement.innerHTML = `<span class="emoji-reaction">${sticker}</span>`;
+                            message.appendChild(stickerElement);
+
+                            if (sticker.includes('❤️') || sticker.includes('💝')) {
+                                createHeartRain(6000);
+                            }
+                        }
+
+                        if (hasSpecialEffect) {
+                            message.querySelector('.message-content').classList.add('special-effect');
+                            addSparkles(message.querySelector('.message-content'));
+                        }
+
+                        scrollToMessage(message);
+
+                        currentMessageIndex++;
+                        showNextMessage();
+                    }, delay);
+                }
+            }
+        }
+
+        showNextMessage();
     }
 });
