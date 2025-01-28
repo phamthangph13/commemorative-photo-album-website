@@ -68,3 +68,4 @@ def log_lucky_money():
 if __name__ == '__main__':
     # Thay đổi host thành '0.0.0.0' để lắng nghe trên tất cả các interfaces
     app.run(host='0.0.0.0', port=5000, debug=True)
+# ngrok http https://ac69-2001-ee0-4527-2b50-d46d-8c61-1c40-3ef4.ngrok-free.app
