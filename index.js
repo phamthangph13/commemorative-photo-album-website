@@ -220,6 +220,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Xử lý click để bắt đầu
     const ribbonContainer = document.querySelector('.ribbon-container');
     
+    // Thêm element chữ Trung Quốc vào body
+    const chineseText = document.createElement('div');
+    chineseText.className = 'chinese-text';
+    // Tách thành từng chữ và wrap trong span
+    '新年快乐'.split('').forEach(char => {
+        const span = document.createElement('span');
+        span.textContent = char;
+        chineseText.appendChild(span);
+    });
+    document.body.appendChild(chineseText);
+
     document.addEventListener('click', function startExperience() {
         if (!hasStarted) {
             ribbonContainer.classList.add('untie');
@@ -227,9 +238,19 @@ document.addEventListener('DOMContentLoaded', function() {
             bgMusic.play();
             hasStarted = true;
             
+            // Thêm hiệu ứng chữ Trung Quốc sau khi tháo nơ
+            setTimeout(() => {
+                chineseText.classList.add('show');
+            }, 2000);
+            
+            // Thêm hiệu ứng biến mất cho chữ Trung Quốc
+            setTimeout(() => {
+                chineseText.classList.add('hide');
+            }, 7000);
+            
             setTimeout(() => {
                 startOverlay.classList.add('hidden');
-            }, 3000);
+            }, 5000);
             
             document.removeEventListener('click', startExperience);
         }
