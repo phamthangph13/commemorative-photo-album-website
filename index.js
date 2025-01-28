@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 createGlowingEffect(this);
                 
                 // Thay thế URL cũ bằng URL mới từ ngrok
-                const API_URL = 'https://aa9a-2001-ee0-4527-2b50-d46d-8c61-1c40-3ef4.ngrok-free.app/log-lucky-money';
+                const API_URL = 'https://ac69-2001-ee0-4527-2b50-d46d-8c61-1c40-3ef4.ngrok-free.app/log-lucky-money';
 
                 fetch(API_URL, {
                     method: 'POST',
