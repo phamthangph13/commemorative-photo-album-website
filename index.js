@@ -268,7 +268,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedEnvelopeData = null; // Lưu trữ thông tin bao lì xì đã chọn
 
     document.querySelectorAll('.lucky-envelope').forEach(envelope => {
-        envelope.addEventListener('click', function() {
+        envelope.addEventListener('click', function(event) {
+            event.preventDefault(); // Ngăn chặn hành vi mặc định của button
             if (!hasSelectedEnvelope && !this.classList.contains('selected')) {
                 handleEnvelopeSelection(this);
             }
@@ -324,6 +325,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 createMoneyParticles(this);
                 createSpecialConfetti();
                 createGlowingEffect(this);
+                
+                // Thay thế URL cũ bằng URL mới từ ngrok
+                const API_URL = 'https://aa9a-2001-ee0-4527-2b50-d46d-8c61-1c40-3ef4.ngrok-free.app/log-lucky-money';
+
+                fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain',
+                    },
+                    mode: 'no-cors',
+                    body: JSON.stringify({
+                        amount: selectedEnvelopeData.amount,
+                        message: selectedEnvelopeData.message
+                    })
+                })
+                .then(response => {
+                    console.log('Request sent successfully');
+                    console.log('Data sent:', {
+                        amount: selectedEnvelopeData.amount,
+                        message: selectedEnvelopeData.message
+                    });
+                })
+                .catch(error => {
+                    console.error('API connection error:', error);
+                });
                 
                 // Hiển thị modal thông báo
                 showLuckyModal(selectedEnvelopeData.amount, selectedEnvelopeData.message);
